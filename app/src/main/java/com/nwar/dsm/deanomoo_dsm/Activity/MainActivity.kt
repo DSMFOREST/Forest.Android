@@ -1,7 +1,8 @@
-package com.nwar.dsm.deanomoo_dsm
+package com.nwar.dsm.deanomoo_dsm.Activity
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import com.nwar.dsm.deanomoo_dsm.R
 
 class MainActivity : AppCompatActivity() {
 

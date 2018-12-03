@@ -1,0 +1,18 @@
+package com.nwar.dsm.deanomoo_dsm.Connect
+
+import okhttp3.OkHttpClient
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+
+object RetrofitService {
+    private val URL = "http://"
+    private val httpBuilder = OkHttpClient.Builder()
+    private val builder = Retrofit.Builder()
+        .baseUrl(URL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .client(httpBuilder.build())
+
+    fun <S> createService(serviceClass: Class<S>) : S{
+        return builder.build().create(serviceClass)
+    }
+}
