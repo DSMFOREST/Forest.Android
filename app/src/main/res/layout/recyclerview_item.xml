@@ -28,6 +28,8 @@
         <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
                 android:layout_weight="2"
                 android:orientation="vertical">
             <ImageView
@@ -43,9 +45,11 @@
             android:text="집에가고싶다아아아아ㅏ아아ㅏ아아아아ㅏㅇ아ㅏㅏㅏㅏㅏㅏㅏ"
             android:textSize="24dp"
             android:layout_marginLeft="20dp"
+              android:layout_marginRight="20dp"
             android:layout_marginTop="20dp"
             android:textColor="#555555"/>
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                  android:layout_marginTop="20dp"
             android:layout_marginLeft="8dp"
             android:layout_marginBottom="8dp"
             android:layout_marginRight="8dp"
