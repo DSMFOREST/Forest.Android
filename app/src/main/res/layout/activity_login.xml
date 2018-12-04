@@ -33,24 +33,39 @@
             app:layout_constraintBottom_toTopOf="@+id/login_maple_iv" android:layout_marginBottom="4dp"
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
     />
-    <EditText android:layout_width="300dp" android:layout_height="wrap_content"
-              android:layout_marginBottom="8dp"
+    <View
+            android:layout_width="304dp"
+            android:layout_height="51dp"
+            android:id="@+id/bg_ID"
+            android:background="@drawable/ic_borderline"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintVertical_bias="0.55"/>
+    <EditText android:layout_width="285dp" android:layout_height="wrap_content"
               android:hint="ID"
               style="@style/EditTextStyle"
-              app:layout_constraintBottom_toBottomOf="parent" android:layout_marginTop="8dp"
-              app:layout_constraintTop_toTopOf="@+id/view" app:layout_constraintVertical_bias="0.55"
-              app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="30dp"
-              android:layout_marginRight="30dp" app:layout_constraintStart_toStartOf="parent"
-              android:layout_marginLeft="30dp" android:layout_marginStart="30dp" android:id="@+id/login_id"/>
-    <EditText android:layout_width="300dp" android:layout_height="wrap_content"
-              android:layout_marginBottom="8dp"
+              app:layout_constraintBottom_toBottomOf="@+id/bg_ID"
+              app:layout_constraintTop_toTopOf="@+id/bg_ID" app:layout_constraintVertical_bias="0.55"
+              app:layout_constraintEnd_toEndOf="@+id/bg_ID"
+              app:layout_constraintStart_toStartOf="@+id/bg_ID"
+              android:id="@+id/login_id"/>
+    <View
+            android:layout_width="304dp"
+            android:layout_height="51dp"
+            android:id="@+id/bg_PW" app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+            android:background="@drawable/ic_borderline"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintVertical_bias="0.72"/>
+    <EditText android:layout_width="285dp" android:layout_height="wrap_content"
               android:hint="PW"
               style="@style/EditTextStyle"
-              app:layout_constraintBottom_toBottomOf="parent" android:layout_marginTop="8dp"
-              app:layout_constraintTop_toTopOf="@+id/view" app:layout_constraintVertical_bias="0.72"
-              app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="30dp"
-              android:layout_marginRight="30dp" app:layout_constraintStart_toStartOf="parent"
-              android:layout_marginLeft="30dp" android:layout_marginStart="30dp" android:id="@+id/login_pw"/>
+              app:layout_constraintBottom_toBottomOf="@+id/bg_PW"
+              app:layout_constraintTop_toTopOf="@+id/bg_PW" app:layout_constraintVertical_bias="0.72"
+              app:layout_constraintEnd_toEndOf="@+id/bg_PW"
+              app:layout_constraintStart_toStartOf="@+id/bg_PW"
+              android:id="@+id/login_pw"/>
     <TextView
             android:text="Log in"
             android:textSize="30dp"
