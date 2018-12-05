@@ -34,6 +34,13 @@ class PosterAdapter (val context: Context, val items : ArrayList<Poster>):Recycl
         fun bind(posterInfo : Poster, context: Context){
             title?.text = posterInfo.title
             content?.text = posterInfo.content
+            picture.setOnClickListener{
+                addItem(Poster("title", "content", null))
+            }
+        }
+        fun addItem(dataInfo : Poster){
+            items.add(itemCount,dataInfo)
+            notifyItemInserted(itemCount)
         }
     }
 }

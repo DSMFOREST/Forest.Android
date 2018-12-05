@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setPosterList()
-        setRecyclerView()
+        val posterAdapter = setRecyclerView()
     }
 
     fun setPosterList(){
@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun setRecyclerView(){
+    fun setRecyclerView() : PosterAdapter {
         val adapter = PosterAdapter(this, posterList)
         val lm = LinearLayoutManager(this)
         val recyclerView = findViewById<RecyclerView>(R.id.list_poster_list)
@@ -33,5 +33,6 @@ class MainActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = lm
         recyclerView.setHasFixedSize(true)
+        return adapter
     }
 }
