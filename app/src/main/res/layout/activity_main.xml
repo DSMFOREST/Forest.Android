@@ -25,6 +25,7 @@
                 android:background="@drawable/borderline_circle"/>
     </android.support.v7.widget.Toolbar>
     <android.support.v7.widget.RecyclerView
+            android:id="@+id/list_poster_list"
             android:layout_width="match_parent"
             android:layout_height="495dp"
             app:layout_constraintStart_toStartOf="parent"
