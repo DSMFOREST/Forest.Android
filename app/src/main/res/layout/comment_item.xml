@@ -10,6 +10,7 @@
             android:layout_height="20dp"
             android:src="@drawable/borderline_circle"/>
     <TextView
+            android:id="@+id/comment_name_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
@@ -18,6 +19,7 @@
             android:textSize="12dp"
             android:text="유동근"/>
     <TextView
+            android:id="@+id/comment_content_tv"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="2dp"
             android:layout_marginLeft="5dp"

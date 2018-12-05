@@ -2,13 +2,14 @@ package com.nwar.dsm.deanomoo_dsm.Adapter
 
 
 import android.content.Context
-import android.support.v4.widget.SwipeRefreshLayout
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import com.nwar.dsm.deanomoo_dsm.DataModule.Comment
 import com.nwar.dsm.deanomoo_dsm.DataModule.Poster
 import com.nwar.dsm.deanomoo_dsm.R
 
@@ -33,16 +34,23 @@ class PosterAdapter (val context: Context, val items : ArrayList<Poster>):Recycl
         val title = view?.findViewById<TextView>(R.id.title_poster_tv)
         val content = view?.findViewById<TextView>(R.id.content_poster_tv)
         val picture = view?.findViewById<ImageView>(R.id.image_poster_iv)
+        val recyclerView = view.findViewById<RecyclerView>(R.id.list_comment_list)
         fun bind(posterInfo : Poster, context: Context){
             title?.text = posterInfo.title
             content?.text = posterInfo.content
-            picture.setOnClickListener{
-                addItem(Poster("${items.size+1}"+"번째 대마", "대마 ${items.size+1}", null))
-            }
+            setRecyclerView(posterInfo.commentList)
         }
         fun addItem(dataInfo : Poster){
             items.add(itemCount,dataInfo)
             notifyItemInserted(itemCount)
+        }
+        fun setRecyclerView(commentList : ArrayList<Comment>?) {
+            val adapter = CommentAdapter(context, commentList)
+            val lm = LinearLayoutManager(context)
+
+            recyclerView.adapter = adapter
+            recyclerView.layoutManager = lm
+            recyclerView.setHasFixedSize(true)
         }
     }
 }

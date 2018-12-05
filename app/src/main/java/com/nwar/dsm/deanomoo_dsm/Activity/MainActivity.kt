@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import com.nwar.dsm.deanomoo_dsm.Adapter.PosterAdapter
+import com.nwar.dsm.deanomoo_dsm.DataModule.Comment
 import com.nwar.dsm.deanomoo_dsm.DataModule.Poster
 import com.nwar.dsm.deanomoo_dsm.R
 import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout
@@ -12,11 +13,17 @@ import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayoutD
 
 class MainActivity : AppCompatActivity(), SwipyRefreshLayout.OnRefreshListener {
 
+    var commentList : ArrayList<Comment>? = null  // 테스트용(댓글리스트)
+
     var posterList = arrayListOf<Poster>()
     lateinit var posterAdapter: PosterAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        /*commentList.add(Comment("유동근","부반장"))
+        commentList.add(Comment("전찬훈", "반장"))*/
+
         setContentView(R.layout.activity_main)
         setPosterList()
         posterAdapter = setRecyclerView()
@@ -30,7 +37,7 @@ class MainActivity : AppCompatActivity(), SwipyRefreshLayout.OnRefreshListener {
 
     fun setPosterList(){
         for (i in 1..11){
-            posterList.add(Poster("$i"+"번째 대마", "대마숲 $i"+"번째", null))
+            posterList.add(Poster("$i"+"번째 대마", "대마숲 $i"+"번째", null, commentList))
         }
     }
 
@@ -46,7 +53,7 @@ class MainActivity : AppCompatActivity(), SwipyRefreshLayout.OnRefreshListener {
     }
 
     override fun onRefresh(direction : SwipyRefreshLayoutDirection) { // 스와이프 새로고침
-        posterAdapter.view.addItem(Poster("${posterAdapter.items.size+1}번째 대마(refresh)", "대마 ${posterAdapter.items.size+1}번째 대마", null))
+        posterAdapter.view.addItem(Poster("${posterAdapter.items.size+1}번째 대마(refresh)", "대마 ${posterAdapter.items.size+1}번째 대마", null,commentList))
         val swipe = findViewById<SwipyRefreshLayout>(R.id.swipe_main_swipe)
         swipe.isRefreshing = false
     }
