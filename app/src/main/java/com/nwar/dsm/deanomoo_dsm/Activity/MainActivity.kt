@@ -7,16 +7,25 @@ import android.support.v7.widget.RecyclerView
 import com.nwar.dsm.deanomoo_dsm.Adapter.PosterAdapter
 import com.nwar.dsm.deanomoo_dsm.DataModule.Poster
 import com.nwar.dsm.deanomoo_dsm.R
+import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout
+import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayoutDirection
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), SwipyRefreshLayout.OnRefreshListener {
 
     var posterList = arrayListOf<Poster>()
+    lateinit var posterAdapter: PosterAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setPosterList()
-        val posterAdapter = setRecyclerView()
+        posterAdapter = setRecyclerView()
+        setEvent()
+    }
+
+    fun setEvent(){
+        val swipeRefresh = findViewById<SwipyRefreshLayout>(R.id.swipe_main_swipe)
+        swipeRefresh.setOnRefreshListener(this)
     }
 
     fun setPosterList(){
@@ -35,4 +44,11 @@ class MainActivity : AppCompatActivity() {
         recyclerView.setHasFixedSize(true)
         return adapter
     }
+
+    override fun onRefresh(direction : SwipyRefreshLayoutDirection) { // 스와이프 새로고침
+        posterAdapter.view.addItem(Poster("${posterAdapter.items.size+1}번째 대마(refresh)", "대마 ${posterAdapter.items.size+1}번째 대마", null))
+        val swipe = findViewById<SwipyRefreshLayout>(R.id.swipe_main_swipe)
+        swipe.isRefreshing = false
+    }
+
 }

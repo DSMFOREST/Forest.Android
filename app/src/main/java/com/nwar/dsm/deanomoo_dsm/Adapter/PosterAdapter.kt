@@ -2,6 +2,7 @@ package com.nwar.dsm.deanomoo_dsm.Adapter
 
 
 import android.content.Context
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -14,8 +15,9 @@ import com.nwar.dsm.deanomoo_dsm.R
 
 class PosterAdapter (val context: Context, val items : ArrayList<Poster>):RecyclerView.Adapter<PosterAdapter.ViewHolder>(){
 
+    lateinit var view : ViewHolder
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ViewHolder {
-        val view : ViewHolder = ViewHolder(LayoutInflater.from(context).inflate(R.layout.recyclerview_item,p0,false))
+        view = ViewHolder(LayoutInflater.from(context).inflate(R.layout.recyclerview_item,p0,false))
         return view
     }
 
@@ -35,7 +37,7 @@ class PosterAdapter (val context: Context, val items : ArrayList<Poster>):Recycl
             title?.text = posterInfo.title
             content?.text = posterInfo.content
             picture.setOnClickListener{
-                addItem(Poster("title", "content", null))
+                addItem(Poster("${items.size+1}"+"번째 대마", "대마 ${items.size+1}", null))
             }
         }
         fun addItem(dataInfo : Poster){
