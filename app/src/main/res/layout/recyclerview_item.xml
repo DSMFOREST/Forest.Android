@@ -64,7 +64,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:layout_marginLeft="8dp"
-            android:layout_marginBottom="8dp"
             android:layout_marginRight="8dp"
             android:background="#d9e9e9"
             android:orientation="vertical">

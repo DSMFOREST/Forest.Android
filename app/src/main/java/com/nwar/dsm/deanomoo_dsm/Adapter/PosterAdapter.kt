@@ -15,32 +15,54 @@ import com.nwar.dsm.deanomoo_dsm.Image.PicassoTransFormation
 import com.nwar.dsm.deanomoo_dsm.R
 import com.squareup.picasso.Picasso
 
-class PosterAdapter (val context: Context, val items : ArrayList<Poster>):RecyclerView.Adapter<PosterAdapter.ViewHolder>(){
+class PosterAdapter (val context: Context, val items : ArrayList<Poster>):RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
-    lateinit var view : ViewHolder
-    override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ViewHolder {
-        Log.e("poster", "onCreateViewHolder")
-        view = ViewHolder(LayoutInflater.from(context).inflate(R.layout.recyclerview_item,p0,false))
+    final val DEFAULT_ITEM = 0
+    final val LAST_ITEM = 1
+
+    lateinit var view : RecyclerView.ViewHolder
+
+    override fun onCreateViewHolder(p0: ViewGroup, p1: Int): RecyclerView.ViewHolder {
+        Log.e("poster", "onCreateViewHolder, ViewType: $p1")
+        if(p1==LAST_ITEM){
+            view = BottomViewHolder(LayoutInflater.from(context).inflate(R.layout.bottomof_recyclerview,p0,false))
+        }
+        else{
+            view = ViewHolder(LayoutInflater.from(context).inflate(R.layout.recyclerview_item,p0,false))
+        }
         return view
     }
 
-    override fun getItemCount(): Int {
-        return items.size
+    override fun onBindViewHolder(p0: RecyclerView.ViewHolder, p1: Int) {
+        Log.e("poster", "onBindViewHolder, position : $p1")
+        if(p0 is ViewHolder) {
+            val holder: ViewHolder = p0 as ViewHolder
+            if (items[p1].picture != null) {
+                val picassoTransFormation = PicassoTransFormation()
+                Picasso.with(context).load(items[p1].picture).transform(picassoTransFormation.resizeTransFormation)
+                    .into(holder.picture)
+                Log.e("imageURL", items[p1].picture)
+            } else Log.e("imageURL", "null")
+            holder.setOnClick(p1)
+            holder.setRecyclerView(items[p1].commentList)
+            holder.bind(items[p1], context)
+        }
+        else if(p0 is BottomViewHolder)
+        {
+            Log.e("바텀뷰","예이!")
+        }
     }
 
-    override fun onBindViewHolder(p0: PosterAdapter.ViewHolder, p1: Int) {
-        Log.e("poster", "onBindViewHolder")
+    override fun getItemViewType(position: Int): Int {
+        Log.e("poster", "getItemViewType, position : $position, size : ${items.size-1}")
+        if(position == items.size-1)return LAST_ITEM
+        else return DEFAULT_ITEM
+    }
 
-        if(items[p1].picture!=null)
-        {
-            val picassoTransFormation = PicassoTransFormation()
-            Picasso.with(context).load(items[p1].picture).transform(picassoTransFormation.resizeTransFormation).into(p0.picture)
-            Log.e("imageURL", items[p1].picture)
+    inner class BottomViewHolder(view : View) : RecyclerView.ViewHolder(view){
+        fun deleteItem(){
+            notifyItemRemoved(items.size)
         }
-        else Log.e("imageURL", "null")
-        p0.setOnClick(p1)
-        p0.setRecyclerView(items[p1].commentList)
-        p0.bind(items[p1],context)
     }
 
     inner class ViewHolder(view : View) : RecyclerView.ViewHolder(view){
@@ -60,10 +82,6 @@ class PosterAdapter (val context: Context, val items : ArrayList<Poster>):Recycl
                 Toast.makeText(context,"${number+1}신고되었습니다.",Toast.LENGTH_SHORT).show()
             }
         }
-        fun addItem(dataInfo : Poster){
-            items.add(itemCount,dataInfo)
-            notifyItemInserted(itemCount)
-        }
         fun setRecyclerView(commentList : ArrayList<Comment>?) {
             Log.e("setRecyclerView", "진입..")
             /*val adapter = CommentAdapter(context, commentList)
@@ -78,5 +96,12 @@ class PosterAdapter (val context: Context, val items : ArrayList<Poster>):Recycl
             //val inflate = mInflater.inflate
             Log.e("SetRecyclerView","끝")
         }
+    }
+    fun addItem(dataInfo : Poster){
+        items.add(itemCount,dataInfo)
+        notifyItemInserted(itemCount)
+    }
+    override fun getItemCount(): Int {
+        return items.size
     }
 }

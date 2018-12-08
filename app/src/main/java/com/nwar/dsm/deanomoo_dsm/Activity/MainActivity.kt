@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity(), SwipyRefreshLayout.OnRefreshListener{
         val swipeRefresh = findViewById<SwipyRefreshLayout>(R.id.swipe_main_swipe)
         val recyclerView = findViewById<RecyclerView>(R.id.list_poster_list)
         swipeRefresh.setOnRefreshListener(this)
-        recyclerView.setOnScrollChangeListener(object : View.OnScrollChangeListener{
+        /*recyclerView.setOnScrollChangeListener(object : View.OnScrollChangeListener{
             override fun onScrollChange(v: View?, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int) {
                 Log.i("scroll","change")
                 val endless = findViewById<LinearLayout>(R.id.endless_scroll_iv)
@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity(), SwipyRefreshLayout.OnRefreshListener{
                     //endless.visibility = INVISIBLE
                 }
             }
-        })
+        })*/
     }
 
     fun setPosterList(){
@@ -80,7 +80,7 @@ class MainActivity : AppCompatActivity(), SwipyRefreshLayout.OnRefreshListener{
 
     override fun onRefresh(direction : SwipyRefreshLayoutDirection) { // 스와이프 새로고침
         val URL = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Cyrillic_letter_A_-_uppercase_and_lowercase.svg/1200px-Cyrillic_letter_A_-_uppercase_and_lowercase.svg.png"
-        posterAdapter.view.addItem(Poster("${posterAdapter.items.size+1}번째 대마(refresh)", "대마 ${posterAdapter.items.size+1}번째 대마", URL,commentList))
+        posterAdapter.addItem(Poster("${posterAdapter.items.size+1}번째 대마(refresh)", "대마 ${posterAdapter.items.size+1}번째 대마", URL,commentList))
         val swipe = findViewById<SwipyRefreshLayout>(R.id.swipe_main_swipe)
         swipe.isRefreshing = false
     }
