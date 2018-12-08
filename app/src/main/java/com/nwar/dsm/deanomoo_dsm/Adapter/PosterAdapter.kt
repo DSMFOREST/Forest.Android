@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
@@ -14,6 +15,7 @@ import com.nwar.dsm.deanomoo_dsm.DataModule.Poster
 import com.nwar.dsm.deanomoo_dsm.Image.PicassoTransFormation
 import com.nwar.dsm.deanomoo_dsm.R
 import com.squareup.picasso.Picasso
+import android.view.View.VISIBLE
 
 class PosterAdapter (val context: Context, val items : ArrayList<Poster>):RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
@@ -70,30 +72,53 @@ class PosterAdapter (val context: Context, val items : ArrayList<Poster>):Recycl
         val content = view?.findViewById<TextView>(R.id.content_poster_tv)
         val picture = view?.findViewById<ImageView>(R.id.image_poster_iv)
         val reportBtn = view?.findViewById<ImageView>(R.id.report_poster_iv)
-        //val recyclerView = view?.findViewById<RecyclerView>(R.id.list_comment_list)
+        val countComment = view?.findViewById<TextView>(R.id.list_countcomment_tv)
+        var isShowComment : Boolean = false
+        val recyclerView = view?.findViewById<RecyclerView>(R.id.list_comment_list)
+        lateinit var posterInfo : Poster
         fun bind(posterInfo : Poster, context: Context){
-            title?.text = posterInfo.title
+            title?.text = posterInfo.title.toString() + "번째 대마"
             content?.text = posterInfo.content
-
+            this.posterInfo = posterInfo
+            if(posterInfo.commentList==null) {
+                countComment.text = "댓글이 없습니다."
+            } else {
+                if (isShowComment) {
+                    countComment.text = posterInfo.commentList.size.toString() + "개의 댓글 ▼"
+                    recyclerView.visibility = VISIBLE
+                } else {
+                    countComment.text = posterInfo.commentList.size.toString() + "개의 댓글 ▶"
+                    recyclerView.visibility = GONE
+                }
+            }
             Log.e("poster", "bind()")
         }
         fun setOnClick(number : Int){
             reportBtn.setOnClickListener {
                 Toast.makeText(context,"${number+1}신고되었습니다.",Toast.LENGTH_SHORT).show()
             }
+            countComment.setOnClickListener {
+                isShowComment = !isShowComment
+                Toast.makeText(context,"댓글창 열기/닫기, ${isShowComment}", Toast.LENGTH_SHORT).show()
+                if(isShowComment){
+                    countComment.text = posterInfo.commentList?.size.toString() + "개의 댓글 ▼"
+                    recyclerView.visibility = VISIBLE
+                }
+                else{
+                    countComment.text = posterInfo.commentList?.size.toString() + "개의 댓글 ▶"
+                    recyclerView.visibility = GONE
+                }
+            }
         }
         fun setRecyclerView(commentList : ArrayList<Comment>?) {
             Log.e("setRecyclerView", "진입..")
-            /*val adapter = CommentAdapter(context, commentList)
+            val adapter = CommentAdapter(context, commentList)
             val lm = CustomLinearLayoutManager(context)
 
             recyclerView.adapter = adapter
             recyclerView.layoutManager = lm
             recyclerView.isNestedScrollingEnabled = false
-            recyclerView.setHasFixedSize(false)*/
-
-            //val mInflater : LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)
-            //val inflate = mInflater.inflate
+            recyclerView.setHasFixedSize(false)
             Log.e("SetRecyclerView","끝")
         }
     }

@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.nwar.dsm.deanomoo_dsm.DataModule.Comment
 import com.nwar.dsm.deanomoo_dsm.DataModule.Poster
+import com.nwar.dsm.deanomoo_dsm.DataModule.ReplyComment
 import com.nwar.dsm.deanomoo_dsm.R
 
 class CommentAdapter (val context: Context, val items : ArrayList<Comment>?) : RecyclerView.Adapter<CommentAdapter.ViewHolder>(){
@@ -25,17 +26,32 @@ class CommentAdapter (val context: Context, val items : ArrayList<Comment>?) : R
     }
 
     override fun onBindViewHolder(p0: CommentAdapter.ViewHolder, p1: Int) {
-        if(items!=null)p0.bind(items[p1],context)
+        if(items!=null){
+            p0.setRecyclerView(items[p1].replyCommentList)
+            p0.bind(items[p1],context)
+        }
         Log.e("comment", "onBindViewHolder")
     }
 
     inner class ViewHolder(view : View) : RecyclerView.ViewHolder(view){
         val name = view.findViewById<TextView>(R.id.comment_name_tv)
         val content = view.findViewById<TextView>(R.id.comment_content_tv)
+        val recyclerView = view.findViewById<RecyclerView>(R.id.list_reply_list)
         fun bind(posterInfo : Comment, context: Context){
             Log.e("comment", "bind()")
             name.text = posterInfo.name
             content.text = posterInfo.content
+        }
+        fun setRecyclerView(replyCommentList: ArrayList<ReplyComment>?){
+            Log.e("setRecyclerView", "진입..")
+            val adapter = ReplyCommentAdapter(context, replyCommentList)
+            val lm = CustomLinearLayoutManager(context)
+
+            recyclerView.adapter = adapter
+            recyclerView.layoutManager = lm
+            recyclerView.isNestedScrollingEnabled = false
+            recyclerView.setHasFixedSize(false)
+            Log.e("SetRecyclerView","끝")
         }
     }
 }
