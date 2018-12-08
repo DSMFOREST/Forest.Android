@@ -1,23 +1,19 @@
 package com.nwar.dsm.deanomoo_dsm.Adapter
 
-
 import android.content.Context
-import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.*
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import com.nwar.dsm.deanomoo_dsm.DataModule.Comment
 import com.nwar.dsm.deanomoo_dsm.DataModule.Poster
 import com.nwar.dsm.deanomoo_dsm.Image.PicassoTransFormation
 import com.nwar.dsm.deanomoo_dsm.R
 import com.squareup.picasso.Picasso
-
 
 class PosterAdapter (val context: Context, val items : ArrayList<Poster>):RecyclerView.Adapter<PosterAdapter.ViewHolder>(){
 
@@ -32,10 +28,6 @@ class PosterAdapter (val context: Context, val items : ArrayList<Poster>):Recycl
         return items.size
     }
 
-    override fun onViewRecycled(holder: ViewHolder) {
-        super.onViewRecycled(holder)
-    }
-
     override fun onBindViewHolder(p0: PosterAdapter.ViewHolder, p1: Int) {
         Log.e("poster", "onBindViewHolder")
 
@@ -43,8 +35,10 @@ class PosterAdapter (val context: Context, val items : ArrayList<Poster>):Recycl
         {
             val picassoTransFormation = PicassoTransFormation()
             Picasso.with(context).load(items[p1].picture).transform(picassoTransFormation.resizeTransFormation).into(p0.picture)
+            Log.e("imageURL", items[p1].picture)
         }
-
+        else Log.e("imageURL", "null")
+        p0.setOnClick(p1)
         p0.setRecyclerView(items[p1].commentList)
         p0.bind(items[p1],context)
     }
@@ -53,12 +47,18 @@ class PosterAdapter (val context: Context, val items : ArrayList<Poster>):Recycl
         val title = view?.findViewById<TextView>(R.id.title_poster_tv)
         val content = view?.findViewById<TextView>(R.id.content_poster_tv)
         val picture = view?.findViewById<ImageView>(R.id.image_poster_iv)
+        val reportBtn = view?.findViewById<ImageView>(R.id.report_poster_iv)
         //val recyclerView = view?.findViewById<RecyclerView>(R.id.list_comment_list)
         fun bind(posterInfo : Poster, context: Context){
             title?.text = posterInfo.title
             content?.text = posterInfo.content
 
             Log.e("poster", "bind()")
+        }
+        fun setOnClick(number : Int){
+            reportBtn.setOnClickListener {
+                Toast.makeText(context,"${number+1}신고되었습니다.",Toast.LENGTH_SHORT).show()
+            }
         }
         fun addItem(dataInfo : Poster){
             items.add(itemCount,dataInfo)

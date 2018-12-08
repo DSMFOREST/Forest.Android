@@ -6,8 +6,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
+import android.view.View.*
 import android.widget.LinearLayout
 import com.nwar.dsm.deanomoo_dsm.Adapter.PosterAdapter
 import com.nwar.dsm.deanomoo_dsm.DataModule.Comment
@@ -16,10 +15,9 @@ import com.nwar.dsm.deanomoo_dsm.R
 import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout
 import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayoutDirection
 
-class MainActivity : AppCompatActivity(), SwipyRefreshLayout.OnRefreshListener, View.OnScrollChangeListener {
+class MainActivity : AppCompatActivity(), SwipyRefreshLayout.OnRefreshListener{
 
     lateinit var commentList : ArrayList<Comment>  // 테스트용(댓글리스트)
-
     var posterList = arrayListOf<Poster>()
     lateinit var posterAdapter: PosterAdapter
 
@@ -36,20 +34,34 @@ class MainActivity : AppCompatActivity(), SwipyRefreshLayout.OnRefreshListener, 
         commentList.add(Comment("전찬훈","  반장"))
 
         setContentView(R.layout.activity_main)
+        setEvent()
         setPosterList()
         posterAdapter = setRecyclerView()
-        setEvent()
     }
 
     fun setEvent(){
         val swipeRefresh = findViewById<SwipyRefreshLayout>(R.id.swipe_main_swipe)
+        val recyclerView = findViewById<RecyclerView>(R.id.list_poster_list)
         swipeRefresh.setOnRefreshListener(this)
-        swipeRefresh.setOnScrollChangeListener(this)
+        recyclerView.setOnScrollChangeListener(object : View.OnScrollChangeListener{
+            override fun onScrollChange(v: View?, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int) {
+                Log.i("scroll","change")
+                val endless = findViewById<LinearLayout>(R.id.endless_scroll_iv)
+                if(!(recyclerView.canScrollVertically(1))){
+                    Log.i("scroll","bottom")
+                    endless.visibility = VISIBLE
+                }
+                else{
+                    Log.i("scroll", "not bottom")
+                    //endless.visibility = INVISIBLE
+                }
+            }
+        })
     }
 
     fun setPosterList(){
-        for (i in 1..11){
-            posterList.add(Poster("$i"+"번째 대마", "대마숲 $i"+"번째", null, commentList))
+        for (i in 1..10){
+            posterList.add(Poster("$i"+"번째 대마", "대마숲 $i"+"번째", "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Cyrillic_letter_A_-_uppercase_and_lowercase.svg/1200px-Cyrillic_letter_A_-_uppercase_and_lowercase.svg.png", commentList))
         }
     }
 
@@ -72,19 +84,4 @@ class MainActivity : AppCompatActivity(), SwipyRefreshLayout.OnRefreshListener, 
         val swipe = findViewById<SwipyRefreshLayout>(R.id.swipe_main_swipe)
         swipe.isRefreshing = false
     }
-
-    override fun onScrollChange(v: View?, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int) {
-        Log.i("scroll","change")
-        val swipeRefresh = findViewById<SwipyRefreshLayout>(R.id.swipe_main_swipe)
-        val endless = findViewById<LinearLayout>(R.id.endless_scroll_iv)
-        if(!(swipeRefresh.canScrollVertically(1))){
-            Log.i("scroll","bottom")
-            endless.visibility = VISIBLE
-        }
-        else{
-            Log.i("scroll", "not bottom")
-            endless.visibility = GONE
-        }
-    }
-
 }

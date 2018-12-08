@@ -3,7 +3,7 @@ package com.nwar.dsm.deanomoo_dsm.Image
 import android.graphics.Bitmap
 import com.squareup.picasso.Transformation
 
-class PicassoTransFormation (){
+class PicassoTransFormation{
     val targetHeight = 400
     val resizeTransFormation = object : Transformation{
         override fun transform(source : Bitmap):Bitmap{
