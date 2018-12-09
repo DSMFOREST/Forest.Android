@@ -11,6 +11,7 @@ object RetrofitService {
         .baseUrl(URL)
         .addConverterFactory(GsonConverterFactory.create())
         .client(httpBuilder.build())
+    val retrofit : Retrofit = builder.build()
 
     fun <S> createService(serviceClass: Class<S>) : S{
         return builder.build().create(serviceClass)

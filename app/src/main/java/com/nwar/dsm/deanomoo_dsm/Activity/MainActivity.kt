@@ -23,17 +23,10 @@ class MainActivity : AppCompatActivity(), SwipyRefreshLayout.OnRefreshListener{
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         reCommentList = ArrayList()
+        commentList = ArrayList()
+        commentList.add(Comment("전찬훈","반장",reCommentList))
+        commentList.add(Comment("유동근", "부반장",reCommentList))
         reCommentList.add(ReplyComment("김해건","부회장"))
-        commentList = ArrayList<Comment>()
-        commentList.add(Comment("유동근", "부반장@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@",reCommentList))
-        commentList.add(Comment("전찬훈","반장",reCommentList))
-        commentList.add(Comment("유동근", "부반장",reCommentList))
-        commentList.add(Comment("전찬훈","반장",reCommentList))
-        commentList.add(Comment("유동근", "부반장",reCommentList))
-        commentList.add(Comment("전찬훈","반장",reCommentList))
-        commentList.add(Comment("유동근", "부반장",reCommentList))
-        reCommentList.add(ReplyComment("김해건", "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"))
-        commentList.add(Comment("전찬훈","반장", reCommentList))
 
         setContentView(R.layout.activity_main)
         setEvent()
@@ -47,9 +40,11 @@ class MainActivity : AppCompatActivity(), SwipyRefreshLayout.OnRefreshListener{
     }
 
     fun setPosterList(){
+        val URL = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Cyrillic_letter_A_-_uppercase_and_lowercase.svg/1200px-Cyrillic_letter_A_-_uppercase_and_lowercase.svg.png"
         for (i in 1..10){
-            posterList.add(Poster(i, "대마숲 $i"+"번째", "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Cyrillic_letter_A_-_uppercase_and_lowercase.svg/1200px-Cyrillic_letter_A_-_uppercase_and_lowercase.svg.png", commentList))
+            posterList.add(Poster(i, "대마숲 $i"+"번째", URL, commentList))
         }
+        posterList.add(Poster(0,"","",ArrayList()))
     }
 
     fun setRecyclerView() : PosterAdapter {
@@ -67,7 +62,9 @@ class MainActivity : AppCompatActivity(), SwipyRefreshLayout.OnRefreshListener{
 
     override fun onRefresh(direction : SwipyRefreshLayoutDirection) { // 스와이프 새로고침
         val URL = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Cyrillic_letter_A_-_uppercase_and_lowercase.svg/1200px-Cyrillic_letter_A_-_uppercase_and_lowercase.svg.png"
+        posterList.removeAt(posterList.lastIndex)
         posterAdapter.addItem(Poster(posterAdapter.items.size+1, "대마 ${posterAdapter.items.size+1}번째 대마", URL,commentList))
+        posterList.add(Poster(0,"","",ArrayList<Comment>()))
         val swipe = findViewById<SwipyRefreshLayout>(R.id.swipe_main_swipe)
         swipe.isRefreshing = false
     }

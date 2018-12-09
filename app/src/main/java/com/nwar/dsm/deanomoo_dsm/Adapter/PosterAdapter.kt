@@ -38,7 +38,7 @@ class PosterAdapter (val context: Context, val items : ArrayList<Poster>):Recycl
     override fun onBindViewHolder(p0: RecyclerView.ViewHolder, p1: Int) {
         Log.e("poster", "onBindViewHolder, position : $p1")
         if(p0 is ViewHolder) {
-            val holder: ViewHolder = p0 as ViewHolder
+            val holder: ViewHolder = p0
             if (items[p1].picture != null) {
                 val picassoTransFormation = PicassoTransFormation()
                 Picasso.with(context).load(items[p1].picture).transform(picassoTransFormation.resizeTransFormation)
@@ -51,12 +51,10 @@ class PosterAdapter (val context: Context, val items : ArrayList<Poster>):Recycl
         }
         else if(p0 is BottomViewHolder)
         {
-            Log.e("바텀뷰","예이!")
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        Log.e("poster", "getItemViewType, position : $position, size : ${items.size-1}")
         if(position == items.size-1)return LAST_ITEM
         else return DEFAULT_ITEM
     }
@@ -79,8 +77,12 @@ class PosterAdapter (val context: Context, val items : ArrayList<Poster>):Recycl
         fun bind(posterInfo : Poster, context: Context){
             title?.text = posterInfo.title.toString() + "번째 대마"
             content?.text = posterInfo.content
+            isShowComment = false
             this.posterInfo = posterInfo
+
             if(posterInfo.commentList==null) {
+                countComment.text = "댓글이 없습니다."
+            } else if(posterInfo.commentList.size==0){
                 countComment.text = "댓글이 없습니다."
             } else {
                 if (isShowComment) {
@@ -91,6 +93,7 @@ class PosterAdapter (val context: Context, val items : ArrayList<Poster>):Recycl
                     recyclerView.visibility = GONE
                 }
             }
+
             Log.e("poster", "bind()")
         }
         fun setOnClick(number : Int){

@@ -1,24 +1,74 @@
 package com.nwar.dsm.deanomoo_dsm.Activity
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import com.nwar.dsm.deanomoo_dsm.R
 
 class LoginActivity : AppCompatActivity() {
-
+    lateinit var pref : SharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+        pref = getSharedPreferences("pref", Context.MODE_PRIVATE)
+        val ID = pref.getString("ID", "")
+        val PW = pref.getString("PW", "")
+        Log.e("load shared ID", ID)
+        Log.e("load shared PW", PW)
+        if(ID!=""&&PW!="") SignIn(ID, PW)
         setClickListener()
     }
-    fun setClickListener(){
+
+    fun setClickListener(){ // 로그인 버튼 터치
         val loginButton = findViewById<TextView>(R.id.login_login_btn)
+        val ID = findViewById<EditText>(R.id.login_id)
+        val PW = findViewById<EditText>(R.id.login_pw)
+
         loginButton.setOnClickListener {
+            val getID = ID.text.toString()
+            val getPW = PW.text.toString()
+            SignIn(getID, getPW)
+        }
+    }
+
+    fun SignIn(getID : String, getPW : String){ // 아이디 패스워드 일치여부 확인 후.
+        val editor = pref.edit()
+        if(isLoginSuccess(getID, getPW)) {
+            editor.putString("ID",getID)
+            editor.putString("PW",getPW)
+            editor.commit()
+            Log.e("sharedpreference ID", getID)
+            Log.e("sharedpreference PW", getPW)
+
+            Toast.makeText(this, "로그인에 성공하였습니다.", Toast.LENGTH_SHORT).show()
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
         }
+        else{
+            editor.putString("ID", "")
+            editor.putString("PW", "")
+            editor.commit()
+            Toast.makeText(this, "ID 혹은 PW를 다시 확인해주십시오.", Toast.LENGTH_SHORT).show()
+        }
+
+    }
+
+    fun isLoginSuccess(ID : String, PW : String) : Boolean{ // 아이디 패스워드 일치여부
+        if(ID == "admin" && PW == "asdff") return true
+        else return false
+    }
+
+    fun Logout(){
+        val editor = pref.edit()
+        editor.putString("ID","")
+        editor.putString("PW","")
+        editor.commit()
     }
 }
