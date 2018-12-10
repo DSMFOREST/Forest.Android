@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
+import android.widget.Toast
 import com.nwar.dsm.deanomoo_dsm.Adapter.PosterAdapter
 import com.nwar.dsm.deanomoo_dsm.DataModule.Comment
 import com.nwar.dsm.deanomoo_dsm.DataModule.Poster
@@ -17,6 +18,8 @@ class MainActivity : AppCompatActivity(), SwipyRefreshLayout.OnRefreshListener{
 
     lateinit var commentList : ArrayList<Comment>  // 테스트용(댓글리스트)
     lateinit var reCommentList : ArrayList<ReplyComment> // 테스트용(답글리스트)
+    var posterCount : Int = 20// 테스트용(게시물 개수)
+    val URL = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Cyrillic_letter_A_-_uppercase_and_lowercase.svg/1200px-Cyrillic_letter_A_-_uppercase_and_lowercase.svg.png"
     var posterList = arrayListOf<Poster>()
     lateinit var posterAdapter: PosterAdapter
 
@@ -40,9 +43,10 @@ class MainActivity : AppCompatActivity(), SwipyRefreshLayout.OnRefreshListener{
     }
 
     fun setPosterList(){
-        val URL = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Cyrillic_letter_A_-_uppercase_and_lowercase.svg/1200px-Cyrillic_letter_A_-_uppercase_and_lowercase.svg.png"
         for (i in 1..10){
-            posterList.add(Poster(i, "대마숲 $i"+"번째", URL, commentList))
+            if(posterCount<=0) break
+            posterList.add(Poster(posterCount, "대마숲 $posterCount"+"번째", URL, commentList))
+            posterCount--
         }
         posterList.add(Poster(0,"","",ArrayList()))
     }
@@ -61,10 +65,18 @@ class MainActivity : AppCompatActivity(), SwipyRefreshLayout.OnRefreshListener{
     }
 
     override fun onRefresh(direction : SwipyRefreshLayoutDirection) { // 스와이프 새로고침
-        val URL = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Cyrillic_letter_A_-_uppercase_and_lowercase.svg/1200px-Cyrillic_letter_A_-_uppercase_and_lowercase.svg.png"
-        posterList.removeAt(posterList.lastIndex)
-        posterAdapter.addItem(Poster(posterAdapter.items.size+1, "대마 ${posterAdapter.items.size+1}번째 대마", URL,commentList))
-        posterList.add(Poster(0,"","",ArrayList<Comment>()))
+        if(posterCount>0) {
+            for(i in 0..4) {
+                if(posterCount<=0) break
+                posterList.removeAt(posterList.lastIndex)
+                posterAdapter.addItem(Poster(posterCount, "대마 ${posterCount}번째 대마", URL, commentList))
+                posterCount--
+                posterList.add(Poster(0, "", "", ArrayList<Comment>()))
+            }
+        }
+        else{
+            Toast.makeText(this, "마지막 게시물입니다.",Toast.LENGTH_SHORT).show()
+        }
         val swipe = findViewById<SwipyRefreshLayout>(R.id.swipe_main_swipe)
         swipe.isRefreshing = false
     }

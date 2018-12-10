@@ -5,11 +5,15 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.text.InputFilter
+import android.text.Spanned
 import android.util.Log
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import com.nwar.dsm.deanomoo_dsm.R
+import java.util.regex.Pattern
+import java.util.regex.Matcher
 
 class LoginActivity : AppCompatActivity() {
     lateinit var pref : SharedPreferences
@@ -17,12 +21,21 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         pref = getSharedPreferences("pref", Context.MODE_PRIVATE)
+        Logout()
         val ID = pref.getString("ID", "")
         val PW = pref.getString("PW", "")
         Log.e("load shared ID", ID)
         Log.e("load shared PW", PW)
         if(ID!=""&&PW!="") SignIn(ID, PW)
+        setInputType()
         setClickListener()
+    }
+
+    fun setInputType(){
+        val ID = findViewById<EditText>(R.id.login_id)
+        val PW = findViewById<EditText>(R.id.login_pw)
+        ID.filters = arrayOf(filterAlphaNum())
+        PW.filters = arrayOf(filterAlphaNum())
     }
 
     fun setClickListener(){ // 로그인 버튼 터치
@@ -61,7 +74,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun isLoginSuccess(ID : String, PW : String) : Boolean{ // 아이디 패스워드 일치여부
-        if(ID == "admin" && PW == "asdff") return true
+        if(ID == "admin" && PW == "asdf") return true
         else return false
     }
 
@@ -70,5 +83,18 @@ class LoginActivity : AppCompatActivity() {
         editor.putString("ID","")
         editor.putString("PW","")
         editor.commit()
+    }
+
+    fun filterAlphaNum(): InputFilter{
+        var inputFilter : InputFilter = object : InputFilter{
+            override fun filter(source: CharSequence?, start: Int, end: Int, dest: Spanned?, dstart: Int, dend: Int): CharSequence? {
+                val pattern : Pattern = Pattern.compile("^[a-zA-Z0-9]*$")
+                if(!pattern.matcher(source).matches()){
+                    return ""
+                }
+                return null
+            }
+        }
+        return inputFilter
     }
 }

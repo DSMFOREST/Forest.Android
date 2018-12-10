@@ -37,20 +37,27 @@ class PosterAdapter (val context: Context, val items : ArrayList<Poster>):Recycl
 
     override fun onBindViewHolder(p0: RecyclerView.ViewHolder, p1: Int) {
         Log.e("poster", "onBindViewHolder, position : $p1")
+
         if(p0 is ViewHolder) {
             val holder: ViewHolder = p0
-            if (items[p1].picture != null) {
-                val picassoTransFormation = PicassoTransFormation()
-                Picasso.with(context).load(items[p1].picture).transform(picassoTransFormation.resizeTransFormation)
-                    .into(holder.picture)
-                Log.e("imageURL", items[p1].picture)
-            } else Log.e("imageURL", "null")
+            setImage(holder, p1)
             holder.setOnClick(p1)
             holder.setRecyclerView(items[p1].commentList)
             holder.bind(items[p1], context)
         }
         else if(p0 is BottomViewHolder)
         {
+        }
+    }
+
+    fun setImage(holder: ViewHolder, position : Int){
+        if (items[position].picture != null && items[position].picture !="") {
+            val picassoTransFormation = PicassoTransFormation()
+            Picasso.with(context).load(items[position].picture).transform(picassoTransFormation.resizeTransFormation)
+                .into(holder.picture)
+            Log.e("imageURL", items[position].picture)
+        } else {
+            Log.e("imageURL", "null")
         }
     }
 
@@ -98,11 +105,10 @@ class PosterAdapter (val context: Context, val items : ArrayList<Poster>):Recycl
         }
         fun setOnClick(number : Int){
             reportBtn.setOnClickListener {
-                Toast.makeText(context,"${number+1}신고되었습니다.",Toast.LENGTH_SHORT).show()
+                Toast.makeText(context,"신고되었습니다.",Toast.LENGTH_SHORT).show()
             }
             countComment.setOnClickListener {
                 isShowComment = !isShowComment
-                Toast.makeText(context,"댓글창 열기/닫기, ${isShowComment}", Toast.LENGTH_SHORT).show()
                 if(isShowComment){
                     countComment.text = posterInfo.commentList?.size.toString() + "개의 댓글 ▼"
                     recyclerView.visibility = VISIBLE
