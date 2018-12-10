@@ -34,9 +34,9 @@ class CommentAdapter (val context: Context, val items : ArrayList<Comment>?) : R
     }
 
     inner class ViewHolder(view : View) : RecyclerView.ViewHolder(view){
-        val name = view.findViewById<TextView>(R.id.comment_name_tv)
-        val content = view.findViewById<TextView>(R.id.comment_content_tv)
-        val recyclerView = view.findViewById<RecyclerView>(R.id.list_reply_list)
+        private val name = view.findViewById<TextView>(R.id.comment_name_tv)
+        private val content = view.findViewById<TextView>(R.id.comment_content_tv)
+        private val recyclerView = view.findViewById<RecyclerView>(R.id.list_reply_list)
         fun bind(posterInfo : Comment, context: Context){
             Log.e("comment", "bind()")
             name.text = posterInfo.name

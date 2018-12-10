@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 import com.squareup.picasso.Transformation
 
 class PicassoTransFormation{
-    val targetHeight = 400
+    private val targetHeight = 400
     val resizeTransFormation = object : Transformation{
         override fun transform(source : Bitmap):Bitmap{
             val aspectRatio = source.width.toDouble()/source.height.toDouble()

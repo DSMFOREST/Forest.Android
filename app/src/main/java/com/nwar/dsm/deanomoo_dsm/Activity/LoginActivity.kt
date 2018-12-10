@@ -16,12 +16,12 @@ import java.util.regex.Pattern
 import java.util.regex.Matcher
 
 class LoginActivity : AppCompatActivity() {
-    lateinit var pref : SharedPreferences
+    private lateinit var pref : SharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         pref = getSharedPreferences("pref", Context.MODE_PRIVATE)
-        Logout()
+        //Logout() // 테스트용
         val ID = pref.getString("ID", "")
         val PW = pref.getString("PW", "")
         Log.e("load shared ID", ID)
@@ -31,14 +31,14 @@ class LoginActivity : AppCompatActivity() {
         setClickListener()
     }
 
-    fun setInputType(){
+    private fun setInputType(){
         val ID = findViewById<EditText>(R.id.login_id)
         val PW = findViewById<EditText>(R.id.login_pw)
         ID.filters = arrayOf(filterAlphaNum())
         PW.filters = arrayOf(filterAlphaNum())
     }
 
-    fun setClickListener(){ // 로그인 버튼 터치
+    private fun setClickListener(){ // 로그인 버튼 터치
         val loginButton = findViewById<TextView>(R.id.login_login_btn)
         val ID = findViewById<EditText>(R.id.login_id)
         val PW = findViewById<EditText>(R.id.login_pw)
@@ -50,7 +50,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    fun SignIn(getID : String, getPW : String){ // 아이디 패스워드 일치여부 확인 후.
+    private fun SignIn(getID : String, getPW : String){ // 아이디 패스워드 일치여부 확인 후.
         val editor = pref.edit()
         if(isLoginSuccess(getID, getPW)) {
             editor.putString("ID",getID)
@@ -73,12 +73,12 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
-    fun isLoginSuccess(ID : String, PW : String) : Boolean{ // 아이디 패스워드 일치여부
+    private fun isLoginSuccess(ID : String, PW : String) : Boolean{ // 아이디 패스워드 일치여부
         if(ID == "admin" && PW == "asdf") return true
         else return false
     }
 
-    fun Logout(){
+    private fun Logout(){
         val editor = pref.edit()
         editor.putString("ID","")
         editor.putString("PW","")

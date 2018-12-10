@@ -11,7 +11,7 @@ import com.nwar.dsm.deanomoo_dsm.R
 
 class ReplyCommentAdapter(val context: Context, val items : ArrayList<ReplyComment>?) : RecyclerView.Adapter<ReplyCommentAdapter.ViewHolder>(){
 
-    lateinit var view : ViewHolder
+    private lateinit var view : ViewHolder
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ViewHolder {
         view = ViewHolder(LayoutInflater.from(context).inflate(R.layout.reply_comment_item,p0,false))
@@ -28,8 +28,8 @@ class ReplyCommentAdapter(val context: Context, val items : ArrayList<ReplyComme
     }
 
     inner class ViewHolder(view : View) : RecyclerView.ViewHolder(view){
-        val name = view.findViewById<TextView>(R.id.reply_name_tv)
-        val content = view.findViewById<TextView>(R.id.reply_content_tv)
+        private val name = view.findViewById<TextView>(R.id.reply_name_tv)
+        private val content = view.findViewById<TextView>(R.id.reply_content_tv)
         fun bind(reCommentInfo : ReplyComment, context: Context){
             name.text = reCommentInfo.name
             content.text = reCommentInfo.content

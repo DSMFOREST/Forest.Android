@@ -17,12 +17,14 @@ import com.nwar.dsm.deanomoo_dsm.R
 import com.squareup.picasso.Picasso
 import android.view.View.VISIBLE
 
+//47, 86~101, 109~119댓글기능. 추후 추가
+
 class PosterAdapter (val context: Context, val items : ArrayList<Poster>):RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     final val DEFAULT_ITEM = 0
     final val LAST_ITEM = 1
 
-    lateinit var view : RecyclerView.ViewHolder
+    private lateinit var view : RecyclerView.ViewHolder
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): RecyclerView.ViewHolder {
         Log.e("poster", "onCreateViewHolder, ViewType: $p1")
@@ -42,7 +44,7 @@ class PosterAdapter (val context: Context, val items : ArrayList<Poster>):Recycl
             val holder: ViewHolder = p0
             setImage(holder, p1)
             holder.setOnClick(p1)
-            holder.setRecyclerView(items[p1].commentList)
+            //holder.setRecyclerView(items[p1].commentList)
             holder.bind(items[p1], context)
         }
         else if(p0 is BottomViewHolder)
@@ -50,11 +52,10 @@ class PosterAdapter (val context: Context, val items : ArrayList<Poster>):Recycl
         }
     }
 
-    fun setImage(holder: ViewHolder, position : Int){
+    private fun setImage(holder: ViewHolder, position : Int){
         if (items[position].picture != null && items[position].picture !="") {
             val picassoTransFormation = PicassoTransFormation()
-            Picasso.with(context).load(items[position].picture).transform(picassoTransFormation.resizeTransFormation)
-                .into(holder.picture)
+            Picasso.with(context).load(items[position].picture).transform(picassoTransFormation.resizeTransFormation).into(holder.picture)
             Log.e("imageURL", items[position].picture)
         } else {
             Log.e("imageURL", "null")
@@ -66,26 +67,24 @@ class PosterAdapter (val context: Context, val items : ArrayList<Poster>):Recycl
         else return DEFAULT_ITEM
     }
 
-    inner class BottomViewHolder(view : View) : RecyclerView.ViewHolder(view){
-        fun deleteItem(){
-            notifyItemRemoved(items.size)
-        }
-    }
+    inner class BottomViewHolder(view : View) : RecyclerView.ViewHolder(view)
 
     inner class ViewHolder(view : View) : RecyclerView.ViewHolder(view){
-        val title = view?.findViewById<TextView>(R.id.title_poster_tv)
-        val content = view?.findViewById<TextView>(R.id.content_poster_tv)
+        private val title = view?.findViewById<TextView>(R.id.title_poster_tv)
+        private val content = view?.findViewById<TextView>(R.id.content_poster_tv)
         val picture = view?.findViewById<ImageView>(R.id.image_poster_iv)
-        val reportBtn = view?.findViewById<ImageView>(R.id.report_poster_iv)
-        val countComment = view?.findViewById<TextView>(R.id.list_countcomment_tv)
-        var isShowComment : Boolean = false
-        val recyclerView = view?.findViewById<RecyclerView>(R.id.list_comment_list)
-        lateinit var posterInfo : Poster
+        private val reportBtn = view?.findViewById<ImageView>(R.id.report_poster_iv)
+        private val countComment = view?.findViewById<TextView>(R.id.list_countcomment_tv)
+        private var isShowComment : Boolean = false
+        private val recyclerView = view?.findViewById<RecyclerView>(R.id.list_comment_list)
+        private lateinit var posterInfo : Poster
         fun bind(posterInfo : Poster, context: Context){
             title?.text = posterInfo.title.toString() + "번째 대마"
             content?.text = posterInfo.content
-            isShowComment = false
             this.posterInfo = posterInfo
+
+            countComment.text = "업데이트 예정(댓글)"
+            /*isShowComment = false
 
             if(posterInfo.commentList==null) {
                 countComment.text = "댓글이 없습니다."
@@ -99,7 +98,7 @@ class PosterAdapter (val context: Context, val items : ArrayList<Poster>):Recycl
                     countComment.text = posterInfo.commentList.size.toString() + "개의 댓글 ▶"
                     recyclerView.visibility = GONE
                 }
-            }
+            }*/
 
             Log.e("poster", "bind()")
         }
@@ -107,7 +106,7 @@ class PosterAdapter (val context: Context, val items : ArrayList<Poster>):Recycl
             reportBtn.setOnClickListener {
                 Toast.makeText(context,"신고되었습니다.",Toast.LENGTH_SHORT).show()
             }
-            countComment.setOnClickListener {
+            /*countComment.setOnClickListener {
                 isShowComment = !isShowComment
                 if(isShowComment){
                     countComment.text = posterInfo.commentList?.size.toString() + "개의 댓글 ▼"
@@ -117,7 +116,7 @@ class PosterAdapter (val context: Context, val items : ArrayList<Poster>):Recycl
                     countComment.text = posterInfo.commentList?.size.toString() + "개의 댓글 ▶"
                     recyclerView.visibility = GONE
                 }
-            }
+            }*/
         }
         fun setRecyclerView(commentList : ArrayList<Comment>?) {
             Log.e("setRecyclerView", "진입..")

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
+import android.widget.ImageView
 import android.widget.Toast
 import com.nwar.dsm.deanomoo_dsm.Adapter.PosterAdapter
 import com.nwar.dsm.deanomoo_dsm.DataModule.Comment
@@ -16,12 +17,12 @@ import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayoutD
 
 class MainActivity : AppCompatActivity(), SwipyRefreshLayout.OnRefreshListener{
 
-    lateinit var commentList : ArrayList<Comment>  // 테스트용(댓글리스트)
-    lateinit var reCommentList : ArrayList<ReplyComment> // 테스트용(답글리스트)
-    var posterCount : Int = 20// 테스트용(게시물 개수)
-    val URL = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Cyrillic_letter_A_-_uppercase_and_lowercase.svg/1200px-Cyrillic_letter_A_-_uppercase_and_lowercase.svg.png"
-    var posterList = arrayListOf<Poster>()
-    lateinit var posterAdapter: PosterAdapter
+    private lateinit var commentList : ArrayList<Comment>        // 테스트용(댓글리스트)
+    private lateinit var reCommentList : ArrayList<ReplyComment> // 테스트용(답글리스트)
+    private var posterCount : Int = 20                           // 테스트용(게시물 개수)
+    private val URL = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Cyrillic_letter_A_-_uppercase_and_lowercase.svg/1200px-Cyrillic_letter_A_-_uppercase_and_lowercase.svg.png"
+    private var posterList = arrayListOf<Poster>()
+    private lateinit var posterAdapter: PosterAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,12 +38,18 @@ class MainActivity : AppCompatActivity(), SwipyRefreshLayout.OnRefreshListener{
         posterAdapter = setRecyclerView()
     }
 
-    fun setEvent(){
+    private fun setEvent(){
         val swipeRefresh = findViewById<SwipyRefreshLayout>(R.id.swipe_main_swipe)
         swipeRefresh.setOnRefreshListener(this)
+
+        val logo = findViewById<ImageView>(R.id.mainlogo)
+        logo.setOnClickListener {
+            val recyclerView = findViewById<RecyclerView>(R.id.list_poster_list)
+            recyclerView.smoothScrollToPosition(0)
+        }
     }
 
-    fun setPosterList(){
+    private fun setPosterList(){
         for (i in 1..10){
             if(posterCount<=0) break
             posterList.add(Poster(posterCount, "대마숲 $posterCount"+"번째", URL, commentList))
@@ -51,7 +58,7 @@ class MainActivity : AppCompatActivity(), SwipyRefreshLayout.OnRefreshListener{
         posterList.add(Poster(0,"","",ArrayList()))
     }
 
-    fun setRecyclerView() : PosterAdapter {
+    private fun setRecyclerView() : PosterAdapter {
         val adapter = PosterAdapter(this, posterList)
         Log.e("poster", "createAdapter")
         val lm = LinearLayoutManager(this)
