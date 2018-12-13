@@ -5,7 +5,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitService {
-    private val URL = "http://"
+    private val URL = "http://aws.jaehoon.kim:5002/"
     private val httpBuilder = OkHttpClient.Builder()
     private val builder = Retrofit.Builder()
         .baseUrl(URL)

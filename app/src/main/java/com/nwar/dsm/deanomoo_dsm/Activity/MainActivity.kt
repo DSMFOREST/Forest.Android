@@ -19,8 +19,8 @@ class MainActivity : AppCompatActivity(), SwipyRefreshLayout.OnRefreshListener{
 
     private lateinit var commentList : ArrayList<Comment>        // 테스트용(댓글리스트)
     private lateinit var reCommentList : ArrayList<ReplyComment> // 테스트용(답글리스트)
-    private var posterCount : Int = 20                           // 테스트용(게시물 개수)
-    private val URL = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Cyrillic_letter_A_-_uppercase_and_lowercase.svg/1200px-Cyrillic_letter_A_-_uppercase_and_lowercase.svg.png"
+    private var posterCount : Int = 6                           // 테스트용(게시물 개수)
+    private val URL = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwkE2N1K1_lRv0G31xORCzPCU-MaCQa_QTL4IN06yMypcjRr_i"
     private var posterList = arrayListOf<Poster>()
     private lateinit var posterAdapter: PosterAdapter
 
@@ -28,9 +28,9 @@ class MainActivity : AppCompatActivity(), SwipyRefreshLayout.OnRefreshListener{
         super.onCreate(savedInstanceState)
         reCommentList = ArrayList()
         commentList = ArrayList()
-        commentList.add(Comment("전찬훈","반장",reCommentList))
+        /*commentList.add(Comment("전찬훈","반장",reCommentList))
         commentList.add(Comment("유동근", "부반장",reCommentList))
-        reCommentList.add(ReplyComment("김해건","부회장"))
+        reCommentList.add(ReplyComment("김해건","부회장"))*/
 
         setContentView(R.layout.activity_main)
         setEvent()

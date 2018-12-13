@@ -1,21 +1,22 @@
 package com.nwar.dsm.deanomoo_dsm.Adapter
 
+import android.app.Dialog
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
 import com.nwar.dsm.deanomoo_dsm.DataModule.Comment
 import com.nwar.dsm.deanomoo_dsm.DataModule.Poster
 import com.nwar.dsm.deanomoo_dsm.Image.PicassoTransFormation
 import com.nwar.dsm.deanomoo_dsm.R
 import com.squareup.picasso.Picasso
 import android.view.View.VISIBLE
+import android.widget.*
 
 //47, 86~101, 109~119댓글기능. 추후 추가
 
@@ -23,7 +24,6 @@ class PosterAdapter (val context: Context, val items : ArrayList<Poster>):Recycl
 
     final val DEFAULT_ITEM = 0
     final val LAST_ITEM = 1
-
     private lateinit var view : RecyclerView.ViewHolder
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): RecyclerView.ViewHolder {
@@ -43,9 +43,9 @@ class PosterAdapter (val context: Context, val items : ArrayList<Poster>):Recycl
         if(p0 is ViewHolder) {
             val holder: ViewHolder = p0
             setImage(holder, p1)
-            holder.setOnClick(p1)
             //holder.setRecyclerView(items[p1].commentList)
             holder.bind(items[p1], context)
+            holder.setOnClick()
         }
         else if(p0 is BottomViewHolder)
         {
@@ -102,10 +102,26 @@ class PosterAdapter (val context: Context, val items : ArrayList<Poster>):Recycl
 
             Log.e("poster", "bind()")
         }
-        fun setOnClick(number : Int){
+        fun setOnClick(){
+            val dialog = Dialog(context)
             reportBtn.setOnClickListener {
-                Toast.makeText(context,"신고되었습니다.",Toast.LENGTH_SHORT).show()
+                dialog.setContentView(R.layout.popup_report)
+                val reportCancel = dialog.findViewById<Button>(R.id.cancel)
+                val report = dialog.findViewById<Button>(R.id.report)
+                val comment = dialog.findViewById<EditText>(R.id.report_comment)
+                var reportComment : String = ""
+                reportCancel.setOnClickListener {
+                    dialog.dismiss()
+                }
+                report.setOnClickListener {
+                    reportComment = comment.text.toString()
+                    Toast.makeText(context,posterInfo.title.toString() + reportComment + "신고되었습니다.",Toast.LENGTH_SHORT).show()
+                    dialog.dismiss()
+                }
+                dialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                dialog.show()
             }
+
             /*countComment.setOnClickListener {
                 isShowComment = !isShowComment
                 if(isShowComment){
@@ -117,6 +133,7 @@ class PosterAdapter (val context: Context, val items : ArrayList<Poster>):Recycl
                     recyclerView.visibility = GONE
                 }
             }*/
+
         }
         fun setRecyclerView(commentList : ArrayList<Comment>?) {
             Log.e("setRecyclerView", "진입..")
